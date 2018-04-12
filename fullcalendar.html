@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Calendar2</title>    
+	<link href="https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />	
+    <link rel="stylesheet" href="bootstrapDatepicker.css" />
+	<style>
+	body {
+		margin-top: 20px;
+		text-align: center;
+		font-size: 14px;
+ 		font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
+ 		color: #585353;
+		}
+	#calendar {
+        margin: 0 auto;
+		width: 900px;
+		background-color: #FFFFFF;
+		  border-radius: 6px;
+        box-shadow: 0 1px 2px #C3C3C3;
+		}
+       
+        .datepicker table tr td span.active.active,
+        .datepicker table tr td.active.active {
+            background: #2196F3 !important;
+            color: #fff !important;
+        }
+        .datepicker table tr td span.focused,
+        .datepicker table tr td.today {
+            background: #D9EDF7 !important;
+            /*D9EDF7 - D3D3D2*/
+        }
+        .fc-basic-view .fc-day-number,
+        .fc-basic-view .fc-week-number {
+            padding: 6px !important
+        }
+        #datePicker {
+           float: right;
+        }
+        /*#ff3b30*/
+
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="form-group">
+		            <div id="datePicker"></div>
+				</div>
+			</div>
+			<div class="col-md-9">
+                <div id='calendar'></div>
+            </div>
+		</div><!--row-->
+	</div><!--container -->
+</body>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/moment.min.js"></script>
+<script src='fullcalendar.js'></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="bootstrapDatepicker.js"></script>
+
+<script type="text/javascript">
+   
+    $(function () {
+        var datePicker = $('#datePicker').datepicker({
+            language: "en",
+            todayBtn: "linked",
+            todayHighlight: true
+        }).on('changeDate', function (e) {
+            var date = e.date;
+            console.log("date: " + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate());
+            calendar.fullCalendar('gotoDate', date);
+            });
+
+		/* initialize the external events
+		-----------------------------------------------------------------*/
+		$('#external-events div.external-event').each(function() {
+			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+			// it doesn't need to have a start or end
+			var eventObject = {
+				title: $.trim($(this).text()) // use the element's text as the event title
+			};
+			// store the Event Object in the DOM element so we can get to it later
+			$(this).data('eventObject', eventObject);
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+		});
+	var calendar =  $('#calendar').fullCalendar({
+		schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+	    header: {
+	      left: 'title',
+	      center: 'agendaDay,agendaWeek,month,agendaFourDay,listWeek',
+	      right: 'prev,next today'
+        },
+        themeSystem:'bootstrap3',
+	    editable: true,
+	    firstDay: 0,
+	    selectable: false,
+		axisFormat: 'h:mm',
+        defaultView: 'month',
+	    nowIndicator: true,
+	    views: {
+            listWeek: {
+                titleFormat: 'MMMM DD YYYY',   
+                buttonText: 'Schedule',
+                dateAlignment: "week"
+                
+	    	},
+	    	agendaFourDay: {
+	            type: 'agenda',
+	            titleFormat: 'MMMM YYYY',
+	        	columnHeaderFormat: 'dddd DD' ,
+	            duration: { days: 4 }
+	          },
+	        month: {
+	        	buttonText: 'Month'
+	        },
+	        week:{
+	        	titleFormat: 'MMMM YYYY',
+	        	columnHeaderFormat: 'dddd DD'
+	        },
+	        day: {
+	        	titleFormat: 'MMMM YYYY',
+	        	columnHeaderFormat: 'dddd DD' ,
+	        	buttonText: 'Day'
+	          }
+	      },
+        allDaySlot: true,//cambie a true
+        selectHelper: true,
+		events: [
+            { id: '1', title: '1024081', start: '2018-04-02T12:00:00', end: '2018-04-02T14:30:00', color: '#2196F3' },
+            { id: '2', title: '1024092', start: '2018-04-10T15:00:00', end: '2018-04-10T16:30:00', color: '#D9534F' },
+            { id: '3', title: '1024073', start: '2018-04-11T13:00:00', end: '2018-04-11T15:30:00', color:'#F0AD4E' },
+            { id: '4', title:'10240864', start: '2018-04-13T18:00:00', end: '2018-04-13T19:30:00', color:'#2196F3' },
+            { id: '5', title: '1024055', start: '2018-04-16T20:00:00', end: '2018-04-16T21:30:00', color:'#13B159' },
+            { id: '6', title: '1024066', start: '2018-04-20T20:00:00', end: '2018-04-20T16:30:00', color:'#D9534F' }
+		 ]
+        }); 
+        /** colores: 
+            rojo: #D9534F
+            azul: #2196F3
+            verde: #13B159
+            naranja: #F0AD4E
+        **/
+    });
+
+</script>
+</html>
