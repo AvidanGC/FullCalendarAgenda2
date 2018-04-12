@@ -1,7 +1,7 @@
-"# FullCalendarAgendaV2" 
-"# FullCalendar Agenda v2"
-#FullCalendar.io Bootstrap DatePicker.js
+# FullCalendar Agenda
+## Bootstrap DatePicker.js
 
+### Contenido
 ![alt text](https://github.com/AvidanGC/FullCalendarAgenda2/blob/master/mainCalendar.png)
 
 ![alt text](https://github.com/AvidanGC/FullCalendarAgenda2/blob/master/listEvents.png)
