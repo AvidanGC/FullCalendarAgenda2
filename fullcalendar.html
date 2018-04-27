@@ -4,16 +4,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Calendar2</title>    
 	<link href="https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />	
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'/>
     <link rel="stylesheet" href="bootstrapDatepicker.css" />
+	   
 	<style>
 	body {
-		margin-top: 20px;
-		text-align: center;
 		font-size: 14px;
  		font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
  		color: #585353;
+		/*margin-top: 20px;
+		text-align: center;
+		font-size: 14px;
+ 		font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
+ 		color: #585353;*/
 		}
 	#calendar {
         margin: 0 auto;
@@ -41,10 +46,43 @@
            float: right;
         }
         /*#ff3b30*/
-
+		/*Styles nav bar*/
+    	.navbar-default .navbar-text,
+    	.navbar-default .navbar-link,
+    	nav.navbar{
+    		background-color: #656d79; 
+			color:#ffff;
+			border: none;
+    	}
 </style>
 </head>
 <body>
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container text-center">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+	    	</div>
+	    	 <div class="collapse navbar-collapse" id="navbar-collapse-1">
+	    	 	<h3 class="navbar-text" id="dataInAgent" >Name Usuario</h3>
+		    	<ul class="nav navbar-nav navbar-right">
+				  <li role="presentation" class="dropdown">
+				    <h4 class="dropdown-toggle" id="statusAgent" data-li="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+				      Available <i class="material-icons" style="color:#5CB85C">fiber_manual_record</i> <span class="caret"></span>
+				    </h4>
+				    <ul class="dropdown-menu">
+				    	<li><a>Available</a></li>
+				    	<li><a>Not Available</a></li>
+				    </ul>
+				  </li>
+				</ul>
+	    	 </div>
+	    </div>		
+	</nav>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3">
@@ -65,8 +103,29 @@
 <script src="bootstrapDatepicker.js"></script>
 
 <script type="text/javascript">
-   
+   	function changeStatusAgent(valor,status){
+		var span = document.createElement("span");
+		var li = document.createElement("li");
+		var data = $(valor).attr('data-li') ;
+		span.className = "caret" ;	
+		li.className= "material-icons" ;
+		li.innerHTML = "fiber_manual_record";
+		var texto = status ;
+        var color ="#5CB85C" ;//available
+		if(texto=="Not Available"){
+		 	color="#D9534F";//NOT available
+		}
+		li.style.color=color;
+		$("#statusAgent").text(texto+" ");
+		$("#statusAgent").attr("data-li",data);
+		document.getElementById("statusAgent").appendChild(li);
+		document.getElementById("statusAgent").appendChild(span);
+	}
     $(function () {
+			$(".dropdown-menu>li").click(function(e){
+			var texto = $.trim($(this).children().text());
+			changeStatusAgent(e,texto) ;
+		});
         var datePicker = $('#datePicker').datepicker({
             language: "en",
             todayBtn: "linked",
